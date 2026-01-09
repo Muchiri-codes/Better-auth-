@@ -4,12 +4,18 @@ import { auth } from "../auth"
 import { headers } from "next/headers";
 
 export const signUp = async (email:string, password:string, name:string) =>{
+  try{
   const result = await auth.api.signUpEmail({
     body:{
-      email, password, name, callbackURL:"/dashboard" //redirect the user to dashboard when signed in successfully
+      email: email.trim().toLowerCase(), password, name, callbackURL:"/dashboard" //redirect the user to dashboard when signed in successfully
     }, 
+    headers: await headers()
   });
   return result;
+}catch(error){
+  console.error("Auth error:", error);
+  throw error
+}
 };
 
 export const signIn = async (email:string, password:string) =>{
