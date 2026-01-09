@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn, signUp } from "../lib/actions/auth-actions";
 
 export default function AuthClientPage() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -39,8 +40,16 @@ export default function AuthClientPage() {
 
     try {
       if (isSignIn) {
+        const result = await signIn(email, password)
+        if (!result.user){
+          setError("invalid email or password")
+        }
         console.log("Signed in");
       } else {
+        const result = await signUp(name, email, password);
+        if(!result.user){ 
+          setError("failed to create account, try again")
+        }
         console.log("Signed up");
       }
     } catch (err) {
