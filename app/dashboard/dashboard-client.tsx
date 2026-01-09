@@ -2,17 +2,24 @@
 import { signOut } from "better-auth/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { auth } from "../lib/auth";
 
-export default function DashboardClientPage() {
+
+type session = typeof auth.$Infer.Session;
+export default function DashboardClientPage({session}: {session:session}) {
   const router = useRouter();
+  
+
+  //access user information
+  const user = session.user
 
 
 
   const handleSignOut = async () => {
     await signOut()
-    alert("Signed out");
     router.push('/auth')
   };
+  const firstName = session?.user?.name?.split(' ')[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -23,7 +30,7 @@ export default function DashboardClientPage() {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Welcome to Your Dashboard!
+                  Welcome back {firstName}!
                 </h2>
                 <p className="text-gray-600">
                   Manage your account and explore better-auth features
@@ -38,8 +45,8 @@ export default function DashboardClientPage() {
                     }
                   />
                   <div className="text-sm">
-                    <p className="text-gray-900 font-medium">John Doe</p>
-                    <p className="text-gray-500">email@gmail.com</p>
+                    <p className="text-gray-900 font-medium">{user.name}</p>
+                    <p className="text-gray-500">{user.email}</p>
                   </div>
                 </div>
            <button
@@ -69,13 +76,13 @@ export default function DashboardClientPage() {
                 </div>
                 <div>
                   <span className="font-medium text-blue-700">User ID:</span>
-                  <span className="ml-2 text-blue-600">1234566</span>
+                  <span className="ml-2 text-blue-600">{user.id}</span>
                 </div>
                 <div>
                   <span className="font-medium text-blue-700">
                     Email Verified:
                   </span>
-                  <span className="ml-2 text-blue-600">Yes</span>
+                  <span className="ml-2 text-blue-600">{user.emailVerified? "Yes":"No"}</span>
                 </div>
               </div>
             </div>

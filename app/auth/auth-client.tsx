@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, signUp } from "../lib/actions/auth-actions";
+import { signInSocial } from "../lib/actions/auth-actions";
+import { auth } from "../lib/auth";
 
 export default function AuthClientPage() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -14,14 +16,11 @@ export default function AuthClientPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Get callback URL from search params (set by middleware)
-
   const handleSocialAuth = async (provider: "google" | "github") => {
     setIsLoading(true);
     setError("");
-
     try {
-      console.log("Logged in with", provider);
+     const result = await signInSocial(provider);
     } catch (err) {
       setError(
         `Error authenticating with ${provider}: ${
@@ -37,6 +36,7 @@ export default function AuthClientPage() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+
 
     try {
       if (isSignIn) {

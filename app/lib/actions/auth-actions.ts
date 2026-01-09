@@ -1,7 +1,8 @@
 "use server"
-
+import { redirect } from "next/navigation";
 import { auth } from "../auth"
 import { headers } from "next/headers";
+
 
 export const signUp = async (email:string, password:string, name:string) =>{
   try{
@@ -25,13 +26,27 @@ export const signIn = async (email:string, password:string) =>{
       password,
       callbackURL:"/dashboard"
     },
+    headers:await headers(),
   });
   return result;
 }
 
-export const signOut = async () =>{
-  const result = await auth.api.signOut({
+
+//allows oauth2
+export const signInSocial = async(provider: "google"| "github") =>{
+  const {url} = await auth.api.signInSocial({
+    body:{
+      provider,
+      callbackURL:'/dashboard'
+    },
     headers:await headers()
   });
+  if (url) {
+    redirect(url);
+  }
+};
+
+export const signOut = async () => {
+  const result = await auth.api.signOut({ headers: await headers() });
   return result;
-}
+};
