@@ -8,7 +8,7 @@ export const signUp = async (email:string, password:string, name:string) =>{
   try{
   const result = await auth.api.signUpEmail({
     body:{
-      email: email.trim().toLowerCase(), password, name, callbackURL:"/dashboard" //redirect the user to dashboard when signed in successfully
+      email: email.trim().toLowerCase(), password, name, callbackURL:"/dashboard" 
     }, 
     headers: await headers()
   });

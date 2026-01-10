@@ -1,3 +1,6 @@
+//server part of the dashboard, always by default
+
+
 import { headers } from "next/headers";
 import DashboardClientPage from "./dashboard-client";
 import { auth } from "../lib/auth";
