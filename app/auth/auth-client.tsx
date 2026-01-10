@@ -14,17 +14,16 @@ export default function AuthClientPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const searchParams = useSearchParams();
+  
 
   const handleSocialAuth = async (provider: "google" | "github") => {
     setIsLoading(true);
     setError("");
     try {
-     const result = await signInSocial(provider);
+      await signInSocial(provider);
     } catch (err) {
       setError(
-        `Error authenticating with ${provider}: ${
-          err instanceof Error ? err.message : "Unknown error"
+        `Error authenticating with ${provider}: ${err instanceof Error ? err.message : "Unknown error"
         }`
       );
     } finally {
@@ -41,21 +40,23 @@ export default function AuthClientPage() {
     try {
       if (isSignIn) {
         const result = await signIn(email, password)
-        if (!result.user){
+        if (!result.user) {
           setError("invalid email or password")
         }
-        console.log("Signed in");
+        if (result.user.role === "ADMIN") {
+          router.push("/AgriAdvisorDashboard")
+        } else {
+          router.push("/AgriAdvisorDashboard")
+        }
       } else {
         const result = await signUp(name, email, password);
-        if(!result.user){ 
+        if (!result.user) {
           setError("failed to create account, try again")
         }
-        console.log("Signed up");
       }
     } catch (err) {
       setError(
-        `Authentication error: ${
-          err instanceof Error ? err.message : "Unknown error"
+        `Authentication error: ${err instanceof Error ? err.message : "Unknown error"
         }`
       );
     } finally {

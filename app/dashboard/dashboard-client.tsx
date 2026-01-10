@@ -1,5 +1,5 @@
 "use client";
-import { signOut } from "better-auth/api";
+import { signOut } from "../lib/actions/auth-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { auth } from "../lib/auth";
@@ -70,6 +70,7 @@ export default function DashboardClientPage({session}: {session:session}) {
                     Authenticated
                   </span>
                 </div>
+                
                 <div>
                   <span className="font-medium text-blue-700">Provider:</span>
                   <span className="ml-2 text-blue-600">Better-Auth</span>
