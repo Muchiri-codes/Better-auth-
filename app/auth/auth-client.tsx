@@ -16,14 +16,16 @@ export default function AuthClientPage() {
   const router = useRouter();
   
 
-  const handleSocialAuth = async (provider: "google" | "github") => {
+    const handleSocialAuth = async (provider: "google" | "github") => {
     setIsLoading(true);
     setError("");
+
     try {
       await signInSocial(provider);
     } catch (err) {
       setError(
-        `Error authenticating with ${provider}: ${err instanceof Error ? err.message : "Unknown error"
+        `Error authenticating with ${provider}: ${
+          err instanceof Error ? err.message : "Unknown error"
         }`
       );
     } finally {
